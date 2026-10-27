@@ -95,8 +95,17 @@
                         winnerId = player.UserId;
                     }
                 }
-                //TODO Заполнить все внутри GameTurnEntity, в том числе winnerId
-                var result = new GameTurnEntity();
+                
+                var result = new GameTurnEntity
+                {
+                    GameId = Id,
+                    TurnIndex = CurrentTurnIndex,
+                    WinnerId = winnerId,
+                    Players = Players
+                        .Select(p => new PlayerTurnInfo { UserId = p.UserId, Name = p.Name, Decision = p.Decision.Value })
+                        .ToList()
+                };
+                
                 // Это должно быть после создания GameTurnEntity
                 foreach (var player in Players)
                     player.Decision = null;
